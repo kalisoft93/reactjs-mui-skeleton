@@ -18,12 +18,16 @@ export class Response<Type> {
   }
 
   private constructor(rawResponse: any, status: Status) {
-    this.data = rawResponse;
+    this.data = rawResponse.data;
     this.status = status;
   }
 
   public getData(): Type {
     return this.data as Type;
+  }
+
+  public getFirstData(): Type {
+    return this.data[0] as Type;
   }
 
   public isEmpty(): boolean {

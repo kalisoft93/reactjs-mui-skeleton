@@ -13,7 +13,7 @@ const cachedUser = storageService.getObject(Locals.USER);
 const cachedAccessToken = storageService.getItem(Locals.ACCESS_TOKEN);
 const cachedAuthorization = storageService.getItem(Locals.AUTHORIZATIONS);
 
-const LOGIN_URL = '';
+const LOGIN_URL = '/api/login';
 
 // TODO: for testing purposes only, delete later
 interface User {
@@ -34,7 +34,7 @@ export interface LoginRequest {
 }
 
 export interface LoginResp {
-  jwt: string;
+  access_token: string;
 }
 
 
@@ -43,7 +43,7 @@ export const loginThunk = createAsyncThunk<Response<LoginResp>, LoginRequest>(
   async ({ email, password }, thunkAPI) => {
 
     try {
-      const data = await api.get<LoginResp>(LOGIN_URL, {email, password});
+      const data = await api.post<LoginResp>(LOGIN_URL, {email, password});
       return data;
     } catch (error) {
       //thunkAPI.dispatch(setMessage(message));
@@ -64,7 +64,7 @@ const loginCases = (
   builder: ActionReducerMapBuilder<AuthenticationState>
 ): void => {
   builder.addCase(asyncThunk.fulfilled, (state, action) => {
-    state.isLoggedIn = !!action.payload;
+    state.isLoggedIn = !!action.payload.getFirstData().access_token;
     state.fetching = false;
   });
   builder.addCase(asyncThunk.pending, (state, action) => {

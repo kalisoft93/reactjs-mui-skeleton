@@ -14,7 +14,7 @@ const headers = (): any => {
 };
 
 let api = axios.create({
-  baseURL: "https://gateway-dev.syncee.co",
+  baseURL: "https://manager.ovped.hu",
   headers: headers(),
 });
 
