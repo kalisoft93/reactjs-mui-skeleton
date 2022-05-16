@@ -8,10 +8,11 @@ import {
   ListItemText,
   styled,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import MaterialIcon from "../../shared/MaterialIcon";
 import { SidebarProps } from "../Sidebar";
-import DSidebarHeader from "./DSidebarHeader";
-import DSidebarProfile from "./DSidebarProfile";
+import ESidebarHeader from "./ESidebarHeader";
+import ESidebarProfile from "./ESidebarProfile";
 
 const SidebarContainer = styled(Box)({
   display: "flex",
@@ -28,17 +29,22 @@ const SBListItemBtn = styled(ListItemButton)({
   padding: "10px 10px",
 });
 
-const DesktopSidebar = (props: SidebarProps) => {
+const ExpandedSidebar = (props: SidebarProps) => {
 
+  const navigation = useNavigate();
+
+  const navigate = (link) => {
+    navigation(link);
+  }
 
   return (
     <SidebarContainer>
       <Box sx={{ p: "0px 5px" }}>
-        <DSidebarHeader></DSidebarHeader>
+        <ESidebarHeader></ESidebarHeader>
       </Box>
       <Divider sx={{ m: "15px 0px" }} orientation="horizontal"></Divider>
       <Box sx={{ p: "0px 5px" }}>
-        <DSidebarProfile></DSidebarProfile>
+        <ESidebarProfile></ESidebarProfile>
       </Box>
       <Divider sx={{ m: "15px 0px" }} orientation="horizontal"></Divider>
       <List sx={{ p: "0px" }}>
@@ -49,7 +55,7 @@ const DesktopSidebar = (props: SidebarProps) => {
                 <ListItemIcon>
                   <MaterialIcon icon={item.icon}></MaterialIcon>
                 </ListItemIcon>
-                <ListItemText sx={{whiteSpace: 'nowrap'}} primary={item.label} />
+                  <ListItemText onClick={() => navigate(item.link)} sx={{whiteSpace: 'nowrap'}} primary={item.label} />
               </SBListItemBtn>
             </SBListItem>
           );
@@ -59,4 +65,4 @@ const DesktopSidebar = (props: SidebarProps) => {
   );
 };
 
-export default DesktopSidebar;
+export default ExpandedSidebar;

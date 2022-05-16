@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 import Login from './pages/login/Login';
 import AuthLayout from './components/layouts/AuthLayout';
-import Header from './components/header/Header';
 import AppLayout from './components/layouts/AppLayout';
 import RouteGuard from './components/routes/RouteGuard';
+import TagList from './pages/login/tag/TagList';
 
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
     <Routes>
       <Route element={<RouteGuard/>}>
           <Route path='/' element={<AppLayout></AppLayout>}></Route>
+          <Route path='/tag' element={<AppLayout title='Tag'><TagList></TagList></AppLayout>}></Route>
       </Route>
       <Route path='/login' element={<AuthLayout><Login></Login></AuthLayout>}></Route>
     </Routes>

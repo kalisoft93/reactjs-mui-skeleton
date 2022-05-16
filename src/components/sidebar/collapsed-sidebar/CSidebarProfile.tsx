@@ -6,7 +6,7 @@ const MSidebarHeaderWrapper = styled(FlexBox)({
     alignItems: 'center'
 });
 
-const MSidebarProfile = () => {
+const CSidebarProfile = () => {
 
     return (
         <MSidebarHeaderWrapper>
@@ -16,4 +16,4 @@ const MSidebarProfile = () => {
 
 };
 
-export default MSidebarProfile;
+export default CSidebarProfile;

@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material';
+import { Box, Card, styled, Typography } from '@mui/material';
 import Sidebar from '../sidebar/Sidebar';
 
 const AppLayoutWrapper = styled(Box) ({
@@ -15,10 +15,16 @@ const SidebarWrapper = styled(Box) ({
 const ContentWrapper = styled(Box) ({
     flex: '1 1 auto',
     height: '100%',
-    background: 'rgba(0,0,0,0.1)'
+    background: 'rgba(0,0,0,0.1)',
+    overflow: 'auto'
 });
 
-const AppLayout = (props) => {
+type AppLayoutProps = {
+    children?: React.ReactNode,
+    title?: string
+}
+
+const AppLayout: React.FC<AppLayoutProps> = (props) => {
 
         return <>
             <AppLayoutWrapper>
@@ -26,7 +32,10 @@ const AppLayout = (props) => {
                    <Sidebar></Sidebar>
                </SidebarWrapper>
                <ContentWrapper>
-                    {props.children}
+                   <Card sx={{m: '20px', overflow: 'auto'}} >
+                       <Typography sx={{p: '20px'}} variant='h6'>{props.title}</Typography>
+                        {props.children}
+                   </Card>
                </ContentWrapper>
            </AppLayoutWrapper>
         </>

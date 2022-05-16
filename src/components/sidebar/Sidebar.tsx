@@ -1,8 +1,8 @@
 import { Box, styled } from "@mui/material";
 import React from "react";
 import { useState } from "react";
-import DesktopSidebar from "./desktop-sidebar/DesktopSidebar";
-import MobileSidebar from "./mobile-sidebar/MobileSIdebar";
+import ExpandedSidebar from "./expanded-sidebar/ExpandedSidebar";
+import CollapsedSidebar from "./collapsed-sidebar/CollapsedSidebar";
 
 const SidebarWrapper = styled(Box)({
   width: "250px",
@@ -15,6 +15,7 @@ const SidebarWrapper = styled(Box)({
 export interface SidebarListItem {
   label: string;
   icon: string;
+  link: string;
 }
 
 export interface SidebarProps {
@@ -26,8 +27,9 @@ export const SidebarContext = React.createContext<Partial<SidebarProps>>({});
 
 const SideBar = () => {
   const list: SidebarListItem[] = [
-    { label: "Menu 1", icon: "LocalOffer" },
-    { label: "Menu 1", icon: "LocalOffer" },
+    { label: "Tag", icon: "LocalOffer", link: '/tag' },
+    { label: "Media", icon: "LocalOffer", link: '/media' },
+    { label: "Termék", icon: "LocalOffer", link: '/product' }
   ];
 
   const [active, setActive] = useState(false);
@@ -40,9 +42,9 @@ const SideBar = () => {
     <SidebarContext.Provider value={{ list: list, callback: onActive }}>
       <SidebarWrapper className={active ? 'active' : null}>
         {!active ? (
-            <DesktopSidebar list={list} callback={onActive}></DesktopSidebar>
+            <ExpandedSidebar list={list} callback={onActive}></ExpandedSidebar>
         ) : (
-            <MobileSidebar list={list} callback={onActive}></MobileSidebar>
+            <CollapsedSidebar list={list} callback={onActive}></CollapsedSidebar>
         )}
       </SidebarWrapper>
     

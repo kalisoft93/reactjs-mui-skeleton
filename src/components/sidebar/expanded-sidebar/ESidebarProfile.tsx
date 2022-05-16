@@ -9,7 +9,7 @@ const SidebarProfileWrapper = styled(Box) ( {
 })
 
 
-const DSidebarProfile = () => {
+const ESidebarProfile = () => {
     return (
         <SidebarProfileWrapper>
             <FlexBox sx={{columnGap: '5px', alignItems: 'center'}}>
@@ -23,4 +23,4 @@ const DSidebarProfile = () => {
     )
 }
 
-export default DSidebarProfile;
+export default ESidebarProfile;

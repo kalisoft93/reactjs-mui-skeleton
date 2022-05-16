@@ -15,7 +15,7 @@ const AppLogo = styled('img') ( {
 });
 
 
-const DSidebarHeader = () => {
+const ESidebarHeader = () => {
 
     const context = useContext(SidebarContext);
 
@@ -29,4 +29,4 @@ const DSidebarHeader = () => {
     )
 }
 
-export default DSidebarHeader;
+export default ESidebarHeader;
