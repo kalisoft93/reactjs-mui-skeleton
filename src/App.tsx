@@ -9,7 +9,7 @@ import Login from './pages/login/Login';
 import AuthLayout from './components/layouts/AuthLayout';
 import AppLayout from './components/layouts/AppLayout';
 import RouteGuard from './components/routes/RouteGuard';
-import TagList from './pages/login/tag/TagList';
+import TagList from './pages/tag/TagList';
 
 
 function App() {

@@ -13,8 +13,10 @@ const theme = createTheme({
       },
       action: {
         active: '#001E3C',
+      },
+      success: {
+        main: '#3d8b40'
       }
-      
     },
     typography: {
         button: {

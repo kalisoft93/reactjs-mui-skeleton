@@ -1,5 +1,7 @@
-import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination } from "@mui/material";
-import React from "react";
+import { Add } from "@mui/icons-material";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, Button, Box } from "@mui/material";
+import React, { useState } from "react";
+import AddEditTagDialog from "./AddEditTagDialog";
 
 interface Column {
     id: 'name' | 'code' | 'population' | 'size' | 'density';
@@ -80,6 +82,7 @@ interface Column {
   ];
   
   const TagList = () => {
+    const [open, setOpen] = useState(false);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
   
@@ -93,7 +96,11 @@ interface Column {
     };
   
     return (
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <Box sx={{ width: '100%', overflow: 'hidden', p: '10px', boxSizing: 'border-box' }}>
+        <AddEditTagDialog maxWidth={'xs'} open={open} callback={(status) => setOpen(status)}></AddEditTagDialog>
+        <Button onClick={() => setOpen(true)} variant="contained" startIcon={<Add sx={{color: 'common.white'}}></Add>}>
+          Hozzaadás
+        </Button>
         <TableContainer sx={{ maxHeight: '100%' }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -140,7 +147,7 @@ interface Column {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      </Paper>
+      </Box>
     );
   }
 
