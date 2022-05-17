@@ -42,4 +42,4 @@ import snackBarUtils from "../../utils/snackBarUtils";
   };
 
 
-export default {post, get};
+export default { post, get};
