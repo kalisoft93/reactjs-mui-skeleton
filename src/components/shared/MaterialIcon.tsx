@@ -2,11 +2,11 @@ import React from "react"
 import  * as Icons from "@mui/icons-material";
 
 
-const MaterialIcon = ({ icon }) => {
+const MaterialIcon = ( {icon, color = null}) => {
     let iconName = icon.replace(/Icon$/, '')
     const DynamicIcon = Icons[iconName];
     return (
-        <DynamicIcon></DynamicIcon>
+        <DynamicIcon sx={{color: color ? color: null}}></DynamicIcon>
     )
 }
 

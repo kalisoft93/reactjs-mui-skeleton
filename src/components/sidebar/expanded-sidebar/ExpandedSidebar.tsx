@@ -8,7 +8,8 @@ import {
   ListItemText,
   styled,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import MaterialIcon from "../../shared/MaterialIcon";
 import { SidebarProps } from "../Sidebar";
 import ESidebarHeader from "./ESidebarHeader";
@@ -23,18 +24,41 @@ const SidebarContainer = styled(Box)({
 
 const SBListItem = styled(ListItem)({
   padding: "0px",
+  margin: "5px 0",
+  '&.active': {
+    background: '#ea2c6d',
+    borderRadius: '11px',
+    color: 'white'
+  }
 });
 
 const SBListItemBtn = styled(ListItemButton)({
-  padding: "10px 10px",
+  padding: "5px 10px",
 });
 
 const ExpandedSidebar = (props: SidebarProps) => {
 
+  const [list, setList] = useState([]);
+  const location = useLocation();
+
+  useEffect(() => {
+    const list = props.list;
+    list.forEach((item) => {
+      if (location.pathname.includes(item.link.slice(1)))
+        item.active = true;
+    });
+    setList(list);
+  }, [props.list]);
+
   const navigation = useNavigate();
 
-  const navigate = (link) => {
-    navigation(link);
+
+  const navigate = (item) => {
+    list.forEach((l) => {
+      if (l === item) l.active = true;
+      else l.active = false;
+    });
+    navigation(item.link);
   }
 
   return (
@@ -48,14 +72,14 @@ const ExpandedSidebar = (props: SidebarProps) => {
       </Box>
       <Divider sx={{ m: "15px 0px" }} orientation="horizontal"></Divider>
       <List sx={{ p: "0px" }}>
-        {props.list.map((item, key) => {
+        {list.map((item, key) => {
           return (
-            <SBListItem key={key}>
+            <SBListItem className={item.active ? 'active': null} key={key} onClick={() => navigate(item)} >
               <SBListItemBtn>
                 <ListItemIcon>
-                  <MaterialIcon icon={item.icon}></MaterialIcon>
+                  <MaterialIcon color={item.active && 'white'} icon={item.icon}></MaterialIcon>
                 </ListItemIcon>
-                  <ListItemText onClick={() => navigate(item.link)} sx={{whiteSpace: 'nowrap'}} primary={item.label} />
+                  <ListItemText sx={{whiteSpace: 'nowrap'}} primary={item.label} />
               </SBListItemBtn>
             </SBListItem>
           );

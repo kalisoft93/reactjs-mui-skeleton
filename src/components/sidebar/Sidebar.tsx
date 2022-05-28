@@ -16,6 +16,7 @@ export interface SidebarListItem {
   label: string;
   icon: string;
   link: string;
+  active?: boolean;
 }
 
 export interface SidebarProps {
@@ -28,7 +29,7 @@ export const SidebarContext = React.createContext<Partial<SidebarProps>>({});
 const SideBar = () => {
   const list: SidebarListItem[] = [
     { label: "Tag", icon: "LocalOffer", link: '/tag' },
-    { label: "Media", icon: "LocalOffer", link: '/media' },
+    { label: "Média", icon: "LocalOffer", link: '/media' },
     { label: "Termék", icon: "LocalOffer", link: '/product' }
   ];
 

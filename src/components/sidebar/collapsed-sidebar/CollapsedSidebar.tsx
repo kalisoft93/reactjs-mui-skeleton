@@ -14,6 +14,7 @@ import CSidebarProfile from "./CSidebarProfile";
 
 import MaterialIcon from "../../shared/MaterialIcon";
 import { SidebarProps } from "../Sidebar";
+import { useNavigate } from "react-router-dom";
 
 const MobileSidebarWrapper = styled(Box)({
   display: "flex",
@@ -31,6 +32,11 @@ const SBListItemBtn = styled(ListItemButton)({
 
 const CollapsedSidebar = (props: SidebarProps) => {
 
+  const navigation = useNavigate();
+
+  const navigate = (link) => {
+    navigation(link);
+  }
 
   return (
     <MobileSidebarWrapper>
@@ -41,7 +47,7 @@ const CollapsedSidebar = (props: SidebarProps) => {
       <List sx={{ p: "0px" }}>
         {props.list.map((item, key) => {
           return (
-            <SBListItem key={key}>
+            <SBListItem key={key} onClick={() => navigate(item.link)} >
               <SBListItemBtn>
                 <ListItemIcon>
                   <MaterialIcon icon={item.icon}></MaterialIcon>

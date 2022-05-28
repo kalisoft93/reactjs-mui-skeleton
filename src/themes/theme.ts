@@ -21,6 +21,10 @@ const theme = createTheme({
     typography: {
         button: {
           textTransform: 'none'
+        },
+        subtitle1: {
+          fontSize: '1.05rem',
+          fontWeight: '400'
         }
       },
     components: {
