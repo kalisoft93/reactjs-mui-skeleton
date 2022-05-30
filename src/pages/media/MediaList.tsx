@@ -17,7 +17,7 @@ import { useState } from "react";
 import CRUDMediaDialog from "./CRUDMediaDialog";
 
 interface Column {
-  id: "id" | "label" | "type" | "url" | "action";
+  id: "id" | "label" | "type" | "parsedUrl" | "action" | "created_at";
   label: string;
   minWidth?: number;
   width?: number;
@@ -29,7 +29,8 @@ const columns: readonly Column[] = [
   { id: "id", label: "ID", width: 70 },
   { id: "label", label: "Címke", width: 100 },
   { id: "type", label: "Típus", width: 50 },
-  { id: "url", label: "URL" },
+  { id: "parsedUrl", label: "URL" },
+  { id: "created_at", label: "Dátum" }
 ];
 
 const MediaList = () => {

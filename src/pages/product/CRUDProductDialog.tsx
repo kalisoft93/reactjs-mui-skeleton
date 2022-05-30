@@ -17,18 +17,19 @@ import FlexBox from "components/shared/FlexBox";
 import MediaSelector from "components/shared/MediaSelector";
 import RichText from "components/shared/RichText";
 import TagSelector from "components/shared/TagSelector";
-import useProduct from "hooks/tag/useProduct";
+import useProduct, { Product } from "hooks/tag/useProduct";
 import { useSnackbar } from "notistack";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 type Props = {
   callback: (open: boolean) => void;
+  defaults?: Product;
 };
 
 type ProductDialogInputs = {
   tags: number[];
-  banner: File[];
+  banner: number[];
   media: number[];
   title: string;
   source: string;
@@ -39,68 +40,58 @@ type ProductDialogInputs = {
 
 const CRUDProductDialog = ({
   callback,
+  defaults,
   open,
   ...rest
 }: Props & DialogProps) => {
-
   const notifier = useSnackbar();
-  const [preview, setPreview] = useState(null);
-  const {postProduct} = useProduct();
+  const { postProduct, updateProduct } = useProduct();
   const {
     register,
     handleSubmit,
     control,
     watch,
     formState: { errors },
-  } = useForm<ProductDialogInputs>({ defaultValues: { tags: [], media: [] } });
-
-  const banner = watch("banner");
-
-  useEffect(() => {
-    if (!banner || banner.length < 1) {
-      setPreview(undefined);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(banner[0]);
-    setPreview(objectUrl);
-
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [banner]);
-
-  const Banner = styled("img")({
-    width: "100%",
-    objectFit: "contain",
-  });
+  } = useForm<ProductDialogInputs>({ defaultValues: defaults || { tags: [], media: [] } });
 
   const onSubmit = (data: ProductDialogInputs) => {
     const formData = new FormData();
-    if (data.tags && data.tags.length > 0){
+    if (data.tags && data.tags.length > 0) {
       data.tags.forEach((tag) => {
-        formData.append('tags[]', tag.toString());
-      })
+        formData.append("tags[]", tag.toString());
+      });
     }
 
-    if (data.media && data.media.length > 0){
+    if (data.media && data.media.length > 0) {
       data.media.forEach((media) => {
-        formData.append('media[]', media.toString());
-      })
+        formData.append("media[]", media.toString());
+      });
     }
 
-    if (data.banner && data.banner.length > 0){
-      formData.append('banner', data.banner[0], data.banner[0].name);
+    if (data.banner) {
+      formData.append("banner", data.banner.toString());
     }
 
-    formData.set('title', data.title);
-    formData.set('description', data.description);
-    formData.set('content', data.content);
-    formData.set('source', data.source);
-    formData.set('webshop_url', data.webshopURL);
+    formData.set("title", data.title);
+    formData.set("description", data.description);
+    formData.set("content", data.content);
+    formData.set("source", data.source);
+    formData.set("webshop_url", data.webshopURL);
 
-    postProduct(formData).then(() => {
-      notifier.enqueueSnackbar('Sikeres mentés', {variant: 'success'});
+    let savePromise: Promise<any> = null;
+
+    if (!defaults){
+      savePromise = postProduct(formData);
+    }else{
+      savePromise = updateProduct(defaults.id, formData);
+    }
+
+    savePromise.then(() => {
+      notifier.enqueueSnackbar("Sikeres mentés", { variant: "success" });
       callback(false);
     });
+
+  
   };
 
   return (
@@ -126,20 +117,14 @@ const CRUDProductDialog = ({
                 controlName="media"
               ></MediaSelector>
 
-              <Paper sx={{ p: "10px" }}>
-                <Typography variant="subtitle1">Banner</Typography>
-                <FormControl variant="standard">
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Banner
-                  </InputLabel>
-                  <Input
-                    type="file"
-                    name="file"
-                    {...register("banner")}
-                  ></Input>
-                </FormControl>
-                <Banner sx={{ pt: "5px" }} src={preview} />
-              </Paper>
+              <MediaSelector
+                control={control}
+                required={true}
+                controlName="banner"
+                title="Banner választó"
+                singleSelect={true}
+              ></MediaSelector>
+            
             </FlexBox>
             <Box flex="1 0 70%">
               <Paper sx={{ p: "10px" }}>

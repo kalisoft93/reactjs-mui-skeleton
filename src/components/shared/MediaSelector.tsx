@@ -10,6 +10,8 @@ type MediaSelectorInputs = {
   control: Control<any, any>;
   controlName: any;
   required?: boolean;
+  singleSelect?: boolean;
+  title?: string;
 };
 
 const MediaSelector = (props: MediaSelectorInputs) => {
@@ -29,13 +31,14 @@ const MediaSelector = (props: MediaSelectorInputs) => {
   return (
     <Paper sx={{ p: "10px" }}>
       <FlexBox sx={{ flexDirection: "column"}}>
-        <Typography variant="subtitle1">Tag választó</Typography>
+        <Typography variant="subtitle1">{props.title || 'Média választó'}</Typography>
         <FHSelect
           placeholder="Media"
           options={mediaList}
           control={props.control}
           required={props.required}
           controlName={props.controlName}
+          singleSelect={props.singleSelect}
         ></FHSelect>
       </FlexBox>
     </Paper>

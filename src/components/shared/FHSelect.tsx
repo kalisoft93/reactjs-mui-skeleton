@@ -34,6 +34,7 @@ type SearchSelectProps = {
   controlName: any;
   placeholder?: string;
   required?: boolean;
+  singleSelect?: boolean; 
 };
 
 const FHSelect = (props: SearchSelectProps) => {
@@ -72,15 +73,15 @@ const FHSelect = (props: SearchSelectProps) => {
           <InputLabel id="demo-multiple-chip-label">{props.placeholder}</InputLabel>
           <Select
             displayEmpty
-            multiple
+            multiple={props.singleSelect ? false: true}
             value={field.value}
             onChange={(e) => field.onChange(handleChange(e))}
             input={
               <Input id="select-multiple-chip" />
           }
-            renderValue={(selected: any[]) => (
+            renderValue={(selected: any) => (
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {(selected || []).map((value) => {
+                {(props.options.length > 0 && selected ? Array.isArray(selected) ? selected : [selected] :  []).map((value) => {
                   const label = props.options.find((o) => o.id === value).title;
                   return (
                   <Chip key={value} label={label} />

@@ -20,12 +20,18 @@ export interface MediaData {
     from: number;
 }
 
+
 const useMedia = () => {
 
     const getMediaList = (page = 1): Promise<MediaData> => {
       
         return api.get<any>(GET_MEDIA_LIST, {page}).then((resp) => {
-            return resp.getFirstData();
+            const rows = resp.getFirstData();
+            rows.data = rows.data.map((row) => {
+                row['parsedUrl'] = 'http://manager.ovped.hu/' + row.file_path;
+                return row;
+            });
+            return rows;
         });
 
     }
