@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@mui/material";
 import FlexBox from "components/shared/FlexBox";
-import useProduct, { Product } from "hooks/tag/useProduct";
+import useProduct, { Product } from "hooks/products/useProduct";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import CRUDProductDialog from "./CRUDProductDialog";
@@ -65,10 +65,12 @@ const ProductList = () => {
 
   const closeDialogHandle = (status) => {
     setOpen(status);
+    init();
   };
 
   const closeUpdateDialogHandle = (status) => {
     setOpenUpdate(status);
+    init();
   }
  
   const deleteMediaHandle = (id) => {
@@ -86,18 +88,13 @@ const ProductList = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        overflow: "hidden",
-        p: "10px",
-        boxSizing: "border-box",
-      }}
-    >
+    <Box>
       {open && (
         <CRUDProductDialog
           maxWidth="lg"
           open={open}
+          title={'Termék hozzaadás'}
+          saveBtnLabel={'Hozzaadás'}
           callback={(status) => closeDialogHandle(status)}
         ></CRUDProductDialog>
       )}
@@ -105,6 +102,8 @@ const ProductList = () => {
         <CRUDProductDialog
           maxWidth="lg"
           open={openUpdate}
+          title={'Termék szerkesztés'}
+          saveBtnLabel={'Mentés'}
           defaults={defaultData}
           callback={(status) => closeUpdateDialogHandle(status)}
         ></CRUDProductDialog>

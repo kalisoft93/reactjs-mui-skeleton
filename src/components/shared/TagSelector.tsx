@@ -53,7 +53,7 @@ const TagSelector = (props: TagSelectorInputs) => {
   return (
     <Paper sx={{p: '10px'}}>
       <FlexBox sx={{ flexDirection: "column", rowGap: "5px" }}>
-        <Typography variant="subtitle1">Tag választó</Typography>
+       <Typography variant="subtitle1">Tag választó</Typography>
         <FHSelect
           changeHandler={searchCategoryTermHandler}
           placeholder="Kategóriák"

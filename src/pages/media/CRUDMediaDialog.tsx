@@ -12,12 +12,9 @@ import {
   Select,
 } from "@mui/material";
 import FlexBox from "components/shared/FlexBox";
-import useMedia from "hooks/tag/useMedia";
+import { BaseCRUDDialogProps } from "components/shared/types/BaseCRUDDialogProps";
+import useMedia from "hooks/media/useMedia";
 import { useForm } from "react-hook-form";
-
-type Props = {
-  callback: (open: boolean) => void;
-};
 
 type MediaDialogInputs = {
   type: string;
@@ -26,7 +23,7 @@ type MediaDialogInputs = {
   label: string;
 };
 
-const CRUDMediaDialog = ({ callback, open, ...rest }: Props & DialogProps) => {
+const CRUDMediaDialog = ({ callback, open, ...rest }: BaseCRUDDialogProps) => {
   const {
     register,
     handleSubmit,

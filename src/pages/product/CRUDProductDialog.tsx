@@ -14,16 +14,17 @@ import {
   Box,
 } from "@mui/material";
 import FlexBox from "components/shared/FlexBox";
-import MediaSelector from "components/shared/MediaSelector";
+import CommonSelector from "components/shared/CommonSelector";
 import RichText from "components/shared/RichText";
 import TagSelector from "components/shared/TagSelector";
-import useProduct, { Product } from "hooks/tag/useProduct";
+import { BaseCRUDDialogProps } from "components/shared/types/BaseCRUDDialogProps";
+import useProduct, { Product } from "hooks/products/useProduct";
 import { useSnackbar } from "notistack";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import useMedia from "hooks/media/useMedia";
+import { selectorDefaultMap } from "utils/utils";
 
-type Props = {
-  callback: (open: boolean) => void;
+type Props = BaseCRUDDialogProps & {
   defaults?: Product;
 };
 
@@ -31,28 +32,27 @@ type ProductDialogInputs = {
   tags: number[];
   banner: number[];
   media: number[];
-  title: string;
   source: string;
+  title: string;
   description: string;
   content: string;
-  webshopURL: string;
+  webshop_url: string;
 };
 
-const CRUDProductDialog = ({
-  callback,
-  defaults,
-  open,
-  ...rest
-}: Props & DialogProps) => {
+const CRUDProductDialog = ({ callback, defaults, open, ...rest }: Props) => {
   const notifier = useSnackbar();
   const { postProduct, updateProduct } = useProduct();
+  const { getMediaListData } = useMedia();
+
   const {
     register,
     handleSubmit,
     control,
     watch,
     formState: { errors },
-  } = useForm<ProductDialogInputs>({ defaultValues: defaults || { tags: [], media: [] } });
+  } = useForm<ProductDialogInputs>({
+    defaultValues: defaults || { tags: [], media: [] },
+  });
 
   const onSubmit = (data: ProductDialogInputs) => {
     const formData = new FormData();
@@ -76,13 +76,13 @@ const CRUDProductDialog = ({
     formData.set("description", data.description);
     formData.set("content", data.content);
     formData.set("source", data.source);
-    formData.set("webshop_url", data.webshopURL);
+    formData.set("webshop_url", data.webshop_url);
 
     let savePromise: Promise<any> = null;
 
-    if (!defaults){
+    if (!defaults) {
       savePromise = postProduct(formData);
-    }else{
+    } else {
       savePromise = updateProduct(defaults.id, formData);
     }
 
@@ -90,8 +90,6 @@ const CRUDProductDialog = ({
       notifier.enqueueSnackbar("Sikeres mentés", { variant: "success" });
       callback(false);
     });
-
-  
   };
 
   return (
@@ -101,7 +99,7 @@ const CRUDProductDialog = ({
       fullWidth={true}
       onClose={() => callback(false)}
     >
-      <DialogTitle>Termék hozzaadás</DialogTitle>
+      <DialogTitle>{rest.title || "Termék hozzaadás"}</DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <FlexBox columnGap={2}>
@@ -111,20 +109,23 @@ const CRUDProductDialog = ({
                 required={true}
                 controlName="tags"
               ></TagSelector>
-              <MediaSelector
+              <CommonSelector
+                fetcher={getMediaListData}
+                mapper={selectorDefaultMap}
                 control={control}
                 required={true}
                 controlName="media"
-              ></MediaSelector>
+              ></CommonSelector>
 
-              <MediaSelector
+              <CommonSelector
+                fetcher={getMediaListData}
+                mapper={selectorDefaultMap}
                 control={control}
                 required={true}
                 controlName="banner"
                 title="Banner választó"
                 singleSelect={true}
-              ></MediaSelector>
-            
+              ></CommonSelector>
             </FlexBox>
             <Box flex="1 0 70%">
               <Paper sx={{ p: "10px" }}>
@@ -144,7 +145,9 @@ const CRUDProductDialog = ({
                       Leírás
                     </InputLabel>
                     <Input
-                      type="text"
+                      type="description"
+                      multiline
+                      rows={4}
                       name="title"
                       {...register("description", { required: true })}
                     ></Input>
@@ -166,7 +169,7 @@ const CRUDProductDialog = ({
                     <Input
                       type="text"
                       name="webshopUrl"
-                      {...register("webshopURL", { required: true })}
+                      {...register("webshop_url", { required: true })}
                     ></Input>
                   </FormControl>
                   <RichText
@@ -183,7 +186,7 @@ const CRUDProductDialog = ({
         <DialogActions>
           <Button onClick={() => callback(false)}>Mégse</Button>
           <Button color="success" type="submit">
-            Mentés
+            {rest.saveBtnLabel || "Mentés"}
           </Button>
         </DialogActions>
       </form>

@@ -31,7 +31,7 @@ import snackBarUtils from "../../utils/snackBarUtils";
     params?: any
   ): Promise<Response<Type>> => {
     return api
-      .get(path, params)
+      .get(path, {params})
       .then((resp: any) => {
         return Response.createSuccessful<Type>(resp.data, resp.status);
       })

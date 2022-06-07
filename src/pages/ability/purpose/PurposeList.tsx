@@ -1,23 +1,25 @@
-import { Add, Delete } from "@mui/icons-material";
+import { Add, Edit, Delete, AccountCircle, Search } from "@mui/icons-material";
 import {
   Box,
   Button,
-  TableContainer,
+  InputAdornment,
   Table,
-  TableHead,
-  TableRow,
-  TableCell,
   TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
   TablePagination,
+  TableRow,
+  TextField,
 } from "@mui/material";
-import useMedia from "hooks/media/useMedia";
-import { useSnackbar } from "notistack";
-import React, { useEffect } from "react";
-import { useState } from "react";
-import CRUDMediaDialog from "./CRUDMediaDialog";
+import FlexBox from "components/shared/FlexBox";
+import useAbilityPurpose from "hooks/ability/useAbilityPurpose";
+import React, { useEffect, useMemo, useState } from "react";
+import debounce from 'lodash.debounce';
+import CRUDPurposeDialog from "./CRUDPurposeDialog";
 
 interface Column {
-  id: "id" | "label" | "type" | "parsedUrl" | "action" | "created_at";
+  id: "id" | "title" | "description" | "created_at";
   label: string;
   minWidth?: number;
   width?: number;
@@ -27,23 +29,24 @@ interface Column {
 
 const columns: readonly Column[] = [
   { id: "id", label: "ID", width: 70 },
-  { id: "label", label: "Címke", width: 100 },
-  { id: "type", label: "Típus", width: 50 },
-  { id: "parsedUrl", label: "URL" },
-  { id: "created_at", label: "Dátum" }
+  { id: "title", label: "Cím", width: 100 },
+  { id: "description", label: "Leírás" },
+  { id: "created_at", label: "date" },
 ];
 
-const MediaList = () => {
+const PurposeList = () => {
+
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [searchTerm, setSearchTerm] = useState(null);
 
-  const { getMediaList, deleteMedia } = useMedia();
-  const notifier = useSnackbar();
+  const { getPuposeList } = useAbilityPurpose();
 
-  const init = (page = 1) => {
-    getMediaList(page).then((tagData) => {
+  const init = (page = 1, searchTerm = null) => {
+    getPuposeList(page, searchTerm).then((tagData) => {
       setRowsPerPage(tagData.per_page);
       setRows(tagData.data);
     });
@@ -51,6 +54,10 @@ const MediaList = () => {
 
   useEffect(() => {
     init(page);
+
+    return () => {
+      debouncedResults.cancel();
+    }
   }, [page]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -65,38 +72,67 @@ const MediaList = () => {
 
   const closeDialogHandle = (status) => {
     setOpen(status);
-    init(1);
+    init();
   };
 
-  const deleteMediaHandle = (id) => {
-    deleteMedia(id).then(() => {
-      notifier.enqueueSnackbar('Sikeres mentés', {variant: 'success'});
-      init();
-    });
+  const closeUpdateDialogHandle = (status) => {
+    setOpenUpdate(status);
+    init();
+  };
+
+  const editMediaHandle = (id) => {
+    // showProduct(id).then((data) => {
+    //   setDefaultData(data);
+    //   setOpenUpdate(true);
+    // });
+  };
+
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+    init(1, event.target.value);
   }
 
+  const debouncedResults = useMemo(() => {
+    return debounce(handleChange, 300);
+  }, []);
+
   return (
-    <Box
-      sx={{
-        width: "100%",
-        overflow: "hidden",
-        p: "10px",
-        boxSizing: "border-box",
-      }}
-    >
-      {open && (
-        <CRUDMediaDialog
+    <Box>
+       {open && (
+        <CRUDPurposeDialog
+          maxWidth="lg"
           open={open}
+          title={'Fejlesztési cél hozzaadás'}
+          saveBtnLabel={'Hozzaadás'}
           callback={(status) => closeDialogHandle(status)}
-        ></CRUDMediaDialog>
+        ></CRUDPurposeDialog>
       )}
-      <Button
-        onClick={() => setOpen(true)}
-        variant="contained"
-        startIcon={<Add sx={{ color: "common.white" }}></Add>}
+      <FlexBox
+        justifyContent="space-between"
+        alignItems="center"
+        columnGap="10px"
+
       >
-        Hozzaadás
-      </Button>
+        <Button
+          onClick={() => setOpen(true)}
+          variant="contained"
+          startIcon={<Add sx={{ color: "common.white" }}></Add>}
+        >
+          Hozzaadás
+        </Button>
+        <TextField
+          variant="standard"
+          onChange={debouncedResults}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search />
+              </InputAdornment>
+            ),
+          }}
+        ></TextField>
+      </FlexBox>
+
       <TableContainer sx={{ maxHeight: "100%" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -129,8 +165,11 @@ const MediaList = () => {
                         </TableCell>
                       );
                     })}
+
                     <TableCell key={"action"}>
-                      <Delete onClick={() => deleteMediaHandle(row.id)}></Delete>
+                      <FlexBox columnGap="10px">
+                        <Edit onClick={() => editMediaHandle(row.id)}></Edit>
+                      </FlexBox>
                     </TableCell>
                   </TableRow>
                 );
@@ -150,4 +189,4 @@ const MediaList = () => {
   );
 };
 
-export default MediaList;
+export default PurposeList;

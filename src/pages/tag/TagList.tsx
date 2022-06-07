@@ -57,7 +57,7 @@ interface Column {
   
     return (
       
-      <Box sx={{ width: '100%', overflow: 'hidden', p: '10px', boxSizing: 'border-box' }}>
+      <Box>
         { open && <CRUDTagDialog open={open} callback={(status) => closeDialogHandle(status)}></CRUDTagDialog>}
         <Button onClick={() => setOpen(true)} variant="contained" startIcon={<Add sx={{color: 'common.white'}}></Add>}>
           Hozzaadás

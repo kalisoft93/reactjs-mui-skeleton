@@ -1,11 +1,18 @@
 import { Paper, Typography } from "@mui/material";
-import useMedia from "hooks/tag/useMedia";
+import useMedia from "hooks/media/useMedia";
 import { useEffect, useState } from "react";
 import { Control } from "react-hook-form";
 import FHSelect from "./FHSelect";
 import FlexBox from "./FlexBox";
 
-type MediaSelectorInputs = {
+export interface CommonSelectorData {
+  id: any,
+  title: string
+}
+
+type CommonSelectorProps = {
+  fetcher: (searchTerm: string) => Promise<any>;
+  mapper: (rawData: any) => CommonSelectorData[];
   changeHandler?: (selectedValues) => void;
   control: Control<any, any>;
   controlName: any;
@@ -14,27 +21,27 @@ type MediaSelectorInputs = {
   title?: string;
 };
 
-const MediaSelector = (props: MediaSelectorInputs) => {
-  const [mediaList, setMediaList] = useState([]);
-
-  const { getMediaList } = useMedia();
+const CommonSelector = ({fetcher, mapper, ...props}: CommonSelectorProps) => {
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    getMediaList().then((list) => {
-      const mediaList = list.data.map((media) => {
-        return {id: media.id, title: media.label};
-      });
-      setMediaList(mediaList);
-    });
+    init();
   }, []);
+
+  const init = (searchTerm: string = "") => {
+    fetcher( searchTerm).then((resp) => {
+      setData(mapper(resp));
+    });
+  }
+ 
 
   return (
     <Paper sx={{ p: "10px" }}>
       <FlexBox sx={{ flexDirection: "column"}}>
-        <Typography variant="subtitle1">{props.title || 'Média választó'}</Typography>
+        <Typography variant="subtitle1">{props.title || 'Választó'}</Typography>
         <FHSelect
           placeholder="Media"
-          options={mediaList}
+          options={data}
           control={props.control}
           required={props.required}
           controlName={props.controlName}
@@ -45,4 +52,4 @@ const MediaSelector = (props: MediaSelectorInputs) => {
   );
 };
 
-export default MediaSelector;
+export default CommonSelector;

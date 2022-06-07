@@ -46,9 +46,9 @@ const useProduct = () => {
 
     }
 
-    const postProduct = (formData: FormData):  Promise<any> => {
+    const postProduct = (params: FormData):  Promise<any> => {
 
-        return api.post<void>(POST_PRODUCT, formData).then((resp) => {
+        return api.post<void>(POST_PRODUCT, params).then((resp) => {
             return resp.getFirstData();
         });
     }

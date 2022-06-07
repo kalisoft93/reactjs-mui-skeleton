@@ -30,7 +30,8 @@ const SideBar = () => {
   const list: SidebarListItem[] = [
     { label: "Tag", icon: "LocalOffer", link: '/tag' },
     { label: "Média", icon: "LocalOffer", link: '/media' },
-    { label: "Termék", icon: "LocalOffer", link: '/product' }
+    { label: "Termék", icon: "LocalOffer", link: '/product' },
+    { label: "Képesség", icon: "LocalOffer", link: '/ability' },
   ];
 
   const [active, setActive] = useState(false);

@@ -23,7 +23,7 @@ export interface MediaData {
 
 const useMedia = () => {
 
-    const getMediaList = (page = 1): Promise<MediaData> => {
+    const getMediaList = (page = 1, searchTerm = null): Promise<MediaData> => {
       
         return api.get<any>(GET_MEDIA_LIST, {page}).then((resp) => {
             const rows = resp.getFirstData();
@@ -36,9 +36,22 @@ const useMedia = () => {
 
     }
 
-    const postMedia = (formData: FormData):  Promise<any> => {
+    const getMediaListData = (searchTerm = null): Promise<Media[]> => {
+      
+        return api.get<any>(GET_MEDIA_LIST, 1).then((resp) => {
+            const rows = resp.getFirstData();
+            rows.data = rows.data.map((row) => {
+                row['parsedUrl'] = 'http://manager.ovped.hu/' + row.file_path;
+                return row;
+            });
+            return rows.data;
+        });
 
-        return api.post<void>(POST_MEDIA, formData).then((resp) => {
+    }
+
+    const postMedia = (params: FormData):  Promise<any> => {
+
+        return api.post<void>(POST_MEDIA, params).then((resp) => {
             return resp.getFirstData();
         });
     }
@@ -50,7 +63,7 @@ const useMedia = () => {
         });
     }
 
-    return {getMediaList, postMedia, deleteMedia};
+    return {getMediaList, getMediaListData, postMedia, deleteMedia};
 
 
 

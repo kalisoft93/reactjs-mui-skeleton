@@ -36,7 +36,7 @@ const useTag = () => {
                 params[`with_filter[categories.tag_categories.id][${index}]`] = catId;
             })
         }
-        return api.get<any>(GET_TAGS, {params}).then((resp) => {
+        return api.get<any>(GET_TAGS, params).then((resp) => {
             const result = resp.getFirstData();
             result.data = result.data.map((r) => {
               if (r.categories) r.categories = r.categories.map((c) => c.title).join(', ');

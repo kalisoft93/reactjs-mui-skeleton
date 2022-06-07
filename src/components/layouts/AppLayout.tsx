@@ -1,4 +1,5 @@
 import { Box, Card, styled, Typography } from "@mui/material";
+import MainPageContainer from "components/shared/containers/MainPageContainer";
 import Sidebar from "../sidebar/Sidebar";
 
 const AppLayoutWrapper = styled(Box)({
@@ -37,7 +38,7 @@ const AppLayout: React.FC<AppLayoutProps> = (props) => {
               <Typography sx={{ p: "20px" }} variant="h6">
                 {props.title}
               </Typography>
-              {props.children}
+              <MainPageContainer>{props.children}</MainPageContainer>
             </Card>
           )}
         </ContentWrapper>
