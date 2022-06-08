@@ -2,6 +2,17 @@ import api from "hooks/api/api";
 
 const GET_PURPOSE_LIST = '/api/ability/purpose/filter';
 const POST_PURPOSE = '/api/ability/purpose/create';
+const SHOW_PURPOSE = '/api/ability/purpose/show';
+const UPDATE_PURPOSE = '/api/ability/purpose/update';
+
+export interface Purpose {
+    id: number, 
+    title: string,
+    description: string,
+    ability_categories: number[],
+    plan_categories: number[],
+    roles: number[],
+}
 
 const useAbilityPurpose = () => {
 
@@ -21,7 +32,27 @@ const useAbilityPurpose = () => {
         });
     }
 
-    return {getPuposeList, postPurpose};
+    const showPurpose = (id): Promise<Purpose> => {
+      
+        return api.get<any>(SHOW_PURPOSE + '/' + id).then((resp) => {
+            const rawData = resp.getFirstData();
+            const purpose = rawData as Purpose;
+            purpose.ability_categories = rawData.ability_categories.map((ac) => ac.id.toString());
+            purpose.plan_categories = rawData.plan_categories.map((pc) => pc.id.toString());
+            purpose.roles = rawData.roles.map((r) => r.id);
+            return purpose;
+        });
+
+    }
+
+    const updatePurpose = (id, body: any):  Promise<any> => {
+
+        return api.post<void>(UPDATE_PURPOSE + '/' + id, body).then((resp) => {
+            return resp.getFirstData();
+        });
+    }
+
+    return {getPuposeList, postPurpose, showPurpose, updatePurpose};
 
 }
 

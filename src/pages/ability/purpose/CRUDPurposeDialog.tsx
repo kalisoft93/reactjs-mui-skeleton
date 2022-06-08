@@ -15,11 +15,17 @@ import FlexBox from "components/shared/FlexBox";
 import TreeSelector from "components/shared/TreeSelector";
 import { BaseCRUDDialogProps } from "components/shared/types/BaseCRUDDialogProps";
 import useAbility from "hooks/ability/useAbility";
-import useAbilityPurpose from "hooks/ability/useAbilityPurpose";
+import useAbilityPurpose, { Purpose } from "hooks/ability/useAbilityPurpose";
 import useCommon from "hooks/common/useCommon";
 import usePlan from "hooks/plan/usePlan";
+import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import { categoryTreeMap, selectorDefaultMap } from "utils/utils";
+
+type CRUDPurposeDialogProps = BaseCRUDDialogProps & {
+  defaults?: Purpose;
+};
+
 
 type PurposeDialogInputs = {
   plan_categories: number[];
@@ -31,12 +37,15 @@ type PurposeDialogInputs = {
 
 const CRUDPurposeDialog = ({
   callback,
+  defaults,
   open,
   saveBtnLabel,
   ...rest
-}: BaseCRUDDialogProps) => {
+}: CRUDPurposeDialogProps) => {
+  
+  const notifier = useSnackbar();
   const { getAbilityCategories } = useAbility();
-  const { postPurpose} = useAbilityPurpose();
+  const { postPurpose, updatePurpose} = useAbilityPurpose();
   const { getPlanCategories } = usePlan();
   const { getRoleData } = useCommon();
 
@@ -47,11 +56,21 @@ const CRUDPurposeDialog = ({
     watch,
     formState: { errors },
   } = useForm<PurposeDialogInputs>({
-    defaultValues: { plan_categories: [], ability_categories: [], roles: [] },
+    defaultValues: defaults || {  plan_categories: [], ability_categories: [], roles: [] },
   });
 
   const onSubmit = (data: PurposeDialogInputs) => {
-    postPurpose(data).then(() => {
+
+    let savePromise: Promise<any> = null;
+
+    if (!defaults) {
+      savePromise = postPurpose(data);
+    } else {
+      savePromise = updatePurpose(defaults.id, data);
+    }
+
+    savePromise.then(() => {
+      notifier.enqueueSnackbar("Sikeres mentés", { variant: "success" });
       callback(false);
     });
   };

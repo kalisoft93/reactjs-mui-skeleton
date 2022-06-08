@@ -43,7 +43,9 @@ const PurposeList = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [searchTerm, setSearchTerm] = useState(null);
 
-  const { getPuposeList } = useAbilityPurpose();
+  const [defaultData, setDefaultData] = useState<any>();
+
+  const { getPuposeList, showPurpose } = useAbilityPurpose();
 
   const init = (page = 1, searchTerm = null) => {
     getPuposeList(page, searchTerm).then((tagData) => {
@@ -80,11 +82,11 @@ const PurposeList = () => {
     init();
   };
 
-  const editMediaHandle = (id) => {
-    // showProduct(id).then((data) => {
-    //   setDefaultData(data);
-    //   setOpenUpdate(true);
-    // });
+  const editPurposeHandle = (id) => {
+    showPurpose(id).then((data) => {
+      setDefaultData(data);
+      setOpenUpdate(true);
+    });
   };
 
   const handleChange = (event) => {
@@ -106,6 +108,16 @@ const PurposeList = () => {
           saveBtnLabel={'Hozzaadás'}
           callback={(status) => closeDialogHandle(status)}
         ></CRUDPurposeDialog>
+      )}
+      {openUpdate  && (
+        <CRUDPurposeDialog
+        maxWidth="lg"
+        open={openUpdate}
+        title={'Fejlesztési cél szerkesztése'}
+        saveBtnLabel={'Mentés'}
+        defaults={defaultData}
+        callback={(status) => closeUpdateDialogHandle(status)}
+      ></CRUDPurposeDialog>
       )}
       <FlexBox
         justifyContent="space-between"
@@ -168,7 +180,7 @@ const PurposeList = () => {
 
                     <TableCell key={"action"}>
                       <FlexBox columnGap="10px">
-                        <Edit onClick={() => editMediaHandle(row.id)}></Edit>
+                        <Edit onClick={() => editPurposeHandle(row.id)}></Edit>
                       </FlexBox>
                     </TableCell>
                   </TableRow>

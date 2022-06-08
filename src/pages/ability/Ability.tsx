@@ -19,8 +19,8 @@ const Ability = () => {
           aria-label="basic tabs example"
         >
           <Tab label="Fejlesztési cél" />
-          <Tab label="Fejlesztési játék" />
           <Tab label="Fejlesztési feladat" />
+          <Tab label="Fejlesztési játék" />
         </Tabs>
         <TabPanel value={value} index={0}>
           <PurposeList></PurposeList>
