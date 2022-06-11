@@ -21,7 +21,7 @@ const Ability = () => {
         >
           <Tab label="Fejlesztési cél" />
           <Tab label="Fejlesztési feladat" />
-          <Tab label="Fejlesztési játék" />
+          <Tab label="Tevékenységek" />
         </Tabs>
         <TabPanel value={value} index={0}>
           <PurposeList></PurposeList>

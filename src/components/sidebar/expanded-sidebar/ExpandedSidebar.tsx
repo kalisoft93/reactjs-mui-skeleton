@@ -34,6 +34,7 @@ const SBListItem = styled(ListItem)({
 
 const SBListItemBtn = styled(ListItemButton)({
   padding: "5px 10px",
+
 });
 
 const ExpandedSidebar = (props: SidebarProps) => {
@@ -76,7 +77,7 @@ const ExpandedSidebar = (props: SidebarProps) => {
           return (
             <SBListItem className={item.active ? 'active': null} key={key} onClick={() => navigate(item)} >
               <SBListItemBtn>
-                <ListItemIcon>
+                <ListItemIcon sx={{minWidth: "40px"}}>
                   <MaterialIcon color={item.active && 'white'} icon={item.icon}></MaterialIcon>
                 </ListItemIcon>
                   <ListItemText sx={{whiteSpace: 'nowrap'}} primary={item.label} />

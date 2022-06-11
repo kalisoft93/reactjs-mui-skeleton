@@ -114,6 +114,8 @@ const CRUDProductDialog = ({ callback, defaults, open, ...rest }: Props) => {
                 mapper={selectorDefaultMap}
                 control={control}
                 required={true}
+                title="Kép választó"
+                placeholder="Kép"
                 controlName="media"
               ></CommonSelector>
 
@@ -123,6 +125,7 @@ const CRUDProductDialog = ({ callback, defaults, open, ...rest }: Props) => {
                 control={control}
                 required={true}
                 controlName="banner"
+                placeholder="Banner"
                 title="Banner választó"
                 singleSelect={true}
               ></CommonSelector>
