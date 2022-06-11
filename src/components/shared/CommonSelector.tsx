@@ -1,13 +1,14 @@
-import { Paper, Typography } from "@mui/material";
-import useMedia from "hooks/media/useMedia";
-import { useEffect, useState } from "react";
+import { InputAdornment, Paper, TextField, Typography } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
 import { Control } from "react-hook-form";
 import FHSelect from "./FHSelect";
 import FlexBox from "./FlexBox";
+import debounce from "lodash/debounce";
+import { Search } from "@mui/icons-material";
 
 export interface CommonSelectorData {
-  id: any,
-  title: string
+  id: any;
+  title: string;
 }
 
 type CommonSelectorProps = {
@@ -18,29 +19,53 @@ type CommonSelectorProps = {
   controlName: any;
   required?: boolean;
   singleSelect?: boolean;
+  withFilter?: boolean;
   title?: string;
+  placeholder?: string;
 };
 
-const CommonSelector = ({fetcher, mapper, ...props}: CommonSelectorProps) => {
+const CommonSelector = ({ fetcher, mapper, ...props }: CommonSelectorProps) => {
   const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     init();
   }, []);
 
   const init = (searchTerm: string = "") => {
-    fetcher( searchTerm).then((resp) => {
+    fetcher(searchTerm).then((resp) => {
       setData(mapper(resp));
     });
-  }
- 
+  };
+
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+    init(event.target.value);
+  };
+
+  const debouncedResults = useMemo(() => {
+    return debounce(handleChange, 300);
+  }, []);
 
   return (
     <Paper sx={{ p: "10px" }}>
-      <FlexBox sx={{ flexDirection: "column"}}>
-        <Typography variant="subtitle1">{props.title || 'Választó'}</Typography>
+      <FlexBox sx={{ flexDirection: "column" }}>
+        <Typography variant="subtitle1">{props.title || "Választó"}</Typography>
+        {props.withFilter &&
+           <TextField
+            variant="standard"
+            onChange={debouncedResults}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          ></TextField>
+        }
         <FHSelect
-          placeholder="Media"
+          placeholder={props.placeholder}
           options={data}
           control={props.control}
           required={props.required}

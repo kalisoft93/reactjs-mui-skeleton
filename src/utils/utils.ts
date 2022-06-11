@@ -26,6 +26,13 @@ export const selectorDefaultMap = (rawData: any[]): CommonSelectorData[] => {
   });
 }
 
+export const selectorFilterMap = (rawData: any[]): CommonSelectorData[] => {
+  return rawData.map((item) => <CommonSelectorData> {
+    id: item.id,
+    title: item.title
+  });
+}
+
 export const getNodesByIDs = (nodes: TreeSelectorData[], nodeIds: any[]): TreeSelectorData[] => {
   let result = [];
   nodes.forEach((node) => {

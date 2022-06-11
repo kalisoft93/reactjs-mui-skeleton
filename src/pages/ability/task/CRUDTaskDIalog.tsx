@@ -2,50 +2,51 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  Box,
+  Paper,
+  FormControl,
+  InputLabel,
+  Input,
   DialogActions,
   Button,
-  Box,
-  FormControl,
-  Input,
-  InputLabel,
-  Paper,
 } from "@mui/material";
 import CommonSelector from "components/shared/CommonSelector";
 import FlexBox from "components/shared/FlexBox";
 import TreeSelector from "components/shared/TreeSelector";
 import { BaseCRUDDialogProps } from "components/shared/types/BaseCRUDDialogProps";
 import useAbility from "hooks/ability/useAbility";
-import useAbilityPurpose, { Purpose } from "hooks/ability/useAbilityPurpose";
+import useAbilityPurpose from "hooks/ability/useAbilityPurpose";
+import useAbilityTask, { Task } from "hooks/ability/useAbilityTask";
 import useCommon from "hooks/common/useCommon";
 import usePlan from "hooks/plan/usePlan";
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
-import { categoryTreeMap, selectorDefaultMap } from "utils/utils";
+import { categoryTreeMap, selectorDefaultMap, selectorFilterMap } from "utils/utils";
 
-type CRUDPurposeDialogProps = BaseCRUDDialogProps & {
-  defaults?: Purpose;
+type CRUDTaskDialogProps = BaseCRUDDialogProps & {
+  defaults?: Task;
 };
 
-
-type PurposeDialogInputs = {
+type TaskDialogInputs = {
   plan_categories: number[];
   ability_categories: number[];
+  ability_purposes: number[];
   roles: number[];
   title: string;
   description: string;
 };
 
-const CRUDPurposeDialog = ({
+const CRUDTaskDialog = ({
   callback,
   defaults,
   open,
   saveBtnLabel,
   ...rest
-}: CRUDPurposeDialogProps) => {
-  
+}: CRUDTaskDialogProps) => {
   const notifier = useSnackbar();
   const { getAbilityCategories } = useAbility();
-  const { postPurpose, updatePurpose} = useAbilityPurpose();
+  const { getPurposeListData } = useAbilityPurpose();
+  const { postTask, updateTask} = useAbilityTask();
   const { getPlanCategories } = usePlan();
   const { getRoleData } = useCommon();
 
@@ -55,18 +56,22 @@ const CRUDPurposeDialog = ({
     control,
     watch,
     formState: { errors },
-  } = useForm<PurposeDialogInputs>({
-    defaultValues: defaults || {  plan_categories: [], ability_categories: [], roles: [] },
+  } = useForm<TaskDialogInputs>({
+    defaultValues: defaults || {
+      plan_categories: [],
+      ability_categories: [],
+      ability_purposes: [],
+      roles: [],
+    },
   });
 
-  const onSubmit = (data: PurposeDialogInputs) => {
-
+  const onSubmit = (data: TaskDialogInputs) => {
     let savePromise: Promise<any> = null;
 
     if (!defaults) {
-      savePromise = postPurpose(data);
+      savePromise = postTask(data);
     } else {
-      savePromise = updatePurpose(defaults.id, data);
+      savePromise = updateTask(defaults.id, data);
     }
 
     savePromise.then(() => {
@@ -82,7 +87,7 @@ const CRUDPurposeDialog = ({
       fullWidth={true}
       onClose={() => callback(false)}
     >
-      <DialogTitle>{rest.title || "Fejlesztési cél hozzaadás"}</DialogTitle>
+      <DialogTitle>{rest.title || "Fejlesztési feladat hozzaadás"}</DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <FlexBox columnGap={1}>
@@ -103,6 +108,7 @@ const CRUDPurposeDialog = ({
                 fetcher={getPlanCategories}
                 mapper={categoryTreeMap}
               ></TreeSelector>
+
               <CommonSelector
                 fetcher={getRoleData}
                 mapper={selectorDefaultMap}
@@ -117,9 +123,7 @@ const CRUDPurposeDialog = ({
             <Box flex="1 0 50%">
               <Paper sx={{ p: "10px" }}>
                 <FormControl sx={{ width: "100%" }} variant="standard">
-                  <InputLabel>
-                    Cím
-                  </InputLabel>
+                  <InputLabel>Cím</InputLabel>
                   <Input
                     type="text"
                     name="title"
@@ -127,9 +131,7 @@ const CRUDPurposeDialog = ({
                   ></Input>
                 </FormControl>
                 <FormControl sx={{ width: "100%" }} variant="standard">
-                  <InputLabel>
-                    Leírás
-                  </InputLabel>
+                  <InputLabel>Leírás</InputLabel>
                   <Input
                     type="text"
                     multiline
@@ -138,6 +140,16 @@ const CRUDPurposeDialog = ({
                     {...register("description", { required: true })}
                   ></Input>
                 </FormControl>
+                <CommonSelector
+                  fetcher={getPurposeListData}
+                  mapper={selectorFilterMap}
+                  control={control}
+                  required={true}
+                  withFilter={true}
+                  title="Cél választó"
+                  placeholder="Cél"
+                  controlName="ability_purposes"
+                ></CommonSelector>
               </Paper>
             </Box>
           </FlexBox>
@@ -153,4 +165,4 @@ const CRUDPurposeDialog = ({
   );
 };
 
-export default CRUDPurposeDialog;
+export default CRUDTaskDialog;

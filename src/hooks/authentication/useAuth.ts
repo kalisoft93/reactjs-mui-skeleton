@@ -1,6 +1,7 @@
+import { updateHeaders } from "utils/axios";
 import { Response } from "../../models/response";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { LoginResp, loginThunk } from "../../redux/slices/authentication";
+import { authenticationAction, LoginResp, loginThunk } from "../../redux/slices/authentication";
 import storageService, { Locals } from "../../utils/storageService";
 
 const useAuth = () => {
@@ -15,10 +16,17 @@ const useAuth = () => {
        return dispatch(loginThunk({ email, password }))
           .unwrap().then((data) => {
             storageService.setItem(Locals.ACCESS_TOKEN, data.getFirstData().access_token);
+            updateHeaders();
             return data;
           });
           
       };
+
+    const logout = () => {
+      storageService.removeItem(Locals.ACCESS_TOKEN);
+      dispatch(authenticationAction.logout());
+      
+    }
 
       return {
         isLoggedIn,
@@ -26,6 +34,7 @@ const useAuth = () => {
         fetching,
         user,
         login,
+        logout
       };
 
 }

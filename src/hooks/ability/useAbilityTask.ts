@@ -1,22 +1,23 @@
 import api from "hooks/api/api";
 
-const GET_PURPOSE_LIST = '/api/ability/purpose/filter';
-const POST_PURPOSE = '/api/ability/purpose/create';
-const SHOW_PURPOSE = '/api/ability/purpose/show';
-const UPDATE_PURPOSE = '/api/ability/purpose/update';
+const GET_PURPOSE_LIST = '/api/ability/task/filter';
+const POST_PURPOSE = '/api/ability/task/create';
+const SHOW_PURPOSE = '/api/ability/task/show';
+const UPDATE_PURPOSE = '/api/ability/task/update';
 
-export interface Purpose {
+export interface Task {
     id: number, 
     title: string,
     description: string,
     ability_categories: number[],
+    ability_purposes: number[],
     plan_categories: number[],
     roles: number[],
 }
 
-const useAbilityPurpose = () => {
+const useAbilityTask = () => {
 
-    const getPuposeList = (page = 1, searchTerm = null): Promise<any> => {
+    const getTaskList = (page = 1, searchTerm = null): Promise<any> => {
       
         const params = {page, search_text: searchTerm};
         return api.get<any>(GET_PURPOSE_LIST, params).then((resp) => {
@@ -25,43 +26,36 @@ const useAbilityPurpose = () => {
 
     }
 
-    const getPurposeListData = (searchTerm = null): Promise<any> => {
-      
-        return getPuposeList(1, searchTerm).then((resp) => {
-            return resp.data;
-        });
-
-    }
-
-    const postPurpose = (body: any):  Promise<any> => {
+    const postTask = (body: any):  Promise<any> => {
 
         return api.post<void>(POST_PURPOSE, body).then((resp) => {
             return resp.getFirstData();
         });
     }
 
-    const showPurpose = (id): Promise<Purpose> => {
+    const showTask = (id): Promise<Task> => {
       
         return api.get<any>(SHOW_PURPOSE + '/' + id).then((resp) => {
             const rawData = resp.getFirstData();
-            const purpose = rawData as Purpose;
+            const purpose = rawData as Task;
             purpose.ability_categories = rawData.ability_categories.map((ac) => ac.id.toString());
             purpose.plan_categories = rawData.plan_categories.map((pc) => pc.id.toString());
+            purpose.ability_purposes = rawData.ability_purposes.map((ap) => ap.id);
             purpose.roles = rawData.roles.map((r) => r.id);
             return purpose;
         });
 
     }
 
-    const updatePurpose = (id, body: any):  Promise<any> => {
+    const updateTask = (id, body: any):  Promise<any> => {
 
         return api.post<void>(UPDATE_PURPOSE + '/' + id, body).then((resp) => {
             return resp.getFirstData();
         });
     }
 
-    return {getPuposeList, postPurpose, showPurpose, updatePurpose, getPurposeListData};
+    return {getTaskList, postTask, showTask, updateTask};
 
 }
 
-export default useAbilityPurpose;
+export default useAbilityTask;

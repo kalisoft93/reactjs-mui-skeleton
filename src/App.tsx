@@ -2,8 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 import {
   BrowserRouter,
+ Navigate,
  Route,
  Routes,
+ useNavigate,
 } from "react-router-dom";
 import Login from './pages/login/Login';
 import AuthLayout from './components/layouts/AuthLayout';
@@ -13,12 +15,15 @@ import TagList from './pages/tag/TagList';
 import MediaList from './pages/media/MediaList';
 import ProductList from 'pages/product/ProductList';
 import Ability from 'pages/ability/Ability';
+import useAuth from 'hooks/authentication/useAuth';
+import { useEffect } from 'react';
 
 
 function App() {
 
+  const auth = useAuth();
+
   return (
-    <BrowserRouter>
     <Routes>
       <Route element={<RouteGuard/>}>
           <Route path='/' element={<AppLayout></AppLayout>}></Route>
@@ -29,7 +34,6 @@ function App() {
       </Route>
       <Route path='/login' element={<AuthLayout><Login></Login></AuthLayout>}></Route>
     </Routes>
-    </BrowserRouter>
   );
 }
 

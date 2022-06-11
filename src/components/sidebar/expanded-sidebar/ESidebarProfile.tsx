@@ -1,5 +1,6 @@
 import { Logout } from "@mui/icons-material";
 import { Avatar, Box, IconButton, styled } from "@mui/material";
+import useAuth from "hooks/authentication/useAuth";
 import FlexBox from "../../shared/FlexBox";
 
 const SidebarProfileWrapper = styled(Box) ( {
@@ -10,6 +11,13 @@ const SidebarProfileWrapper = styled(Box) ( {
 
 
 const ESidebarProfile = () => {
+
+    const auth = useAuth();
+
+    const logout = () => {
+        auth.logout();
+    }
+
     return (
         <SidebarProfileWrapper>
             <FlexBox sx={{columnGap: '5px', alignItems: 'center'}}>
@@ -17,7 +25,7 @@ const ESidebarProfile = () => {
                 <Box sx={{whiteSpace: 'nowrap'}}>Kiss Mónika</Box>
             </FlexBox>
             <IconButton>
-                <Logout></Logout>
+                <Logout onClick={logout}></Logout>
             </IconButton>
         </SidebarProfileWrapper>
     )

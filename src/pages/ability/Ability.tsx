@@ -3,6 +3,7 @@ import MainPageContainer from "components/shared/containers/MainPageContainer";
 import TabPanel from "components/shared/TabPanel";
 import React from "react";
 import PurposeList from "./purpose/PurposeList";
+import TaskList from "./task/TaskList";
 
 const Ability = () => {
   const [value, setValue] = React.useState(0);
@@ -26,7 +27,7 @@ const Ability = () => {
           <PurposeList></PurposeList>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <TaskList></TaskList>
         </TabPanel>
         <TabPanel value={value} index={2}>
           Item Three

@@ -79,10 +79,14 @@ const loginCases = (
 export const authenticationSlice = createSlice({
   name: "authentication",
   initialState,
-  reducers: {},
   extraReducers: (builder) => {
     loginCases(loginThunk, builder);
   },
+  reducers:{
+    logout: (state) => {
+      state.isLoggedIn = false;
+    }
+  } 
 });
 
 export const authenticationAction = authenticationSlice.actions;

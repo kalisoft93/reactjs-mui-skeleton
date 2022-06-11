@@ -1,7 +1,6 @@
 import { ChevronRight, Expand, ExpandMore, KeyboardReturnSharp, Search } from "@mui/icons-material";
 import { TreeItem, TreeView, treeItemClasses } from "@mui/lab";
 import {
-  Box,
   Checkbox,
   Chip,
   debounce,
