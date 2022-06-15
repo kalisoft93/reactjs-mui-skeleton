@@ -26,10 +26,6 @@ type CRUDPlanTaskDialogProps = BaseCRUDDialogProps & {
 };
 
 type PlanTaskDialogInputs = {
-  title: string;
-  description: string;
-  content: string;
-  pedagogical_suggestion: string;
   plan_categories: number[];
   ability_categories: number[];
   ability_tasks: number[];
@@ -40,6 +36,10 @@ type PlanTaskDialogInputs = {
   media: number[];
   levels: number[];
   banner: number[];
+  title: string;
+  description: string;
+  content: string;
+  pedagogical_suggestion: string;
 };
 
 const CRUDPlanTaskDialog = ({
@@ -68,6 +68,7 @@ const CRUDPlanTaskDialog = ({
       tags: [],
       levels: [],
       roles: [],
+      products: []
     },
   });
 
@@ -112,16 +113,18 @@ const CRUDPlanTaskDialog = ({
                 mediaProps={{control:control, controlName: "media"}}
                 bannerProps={{control:control, controlName: "banner"}}
                 levelsProps={{control: control, controlName: "levels"}}
+                productProps={{control: control, controlName: "products"}}
+                aTaskProps={{control: control, controlName: "ability_tasks"}}
               ></PlanTaskFormCenter>
             </FlexBox>
 
             <Box flex="1 1 auto">
               <Paper sx={{ p: "10px" }}>
                 <PlanTaskFormRight
-                  titleProps={{control: control, controlName:"title"}}
-                  descriptionProps={{control: control, controlName:"description"}}
+                  titleProps={register("title")}
+                  descriptionProps={register("description")}
                   contentProps={{control: control, controlName:"content"}}
-                  pedagogicalSuggProps={{control: control, controlName:"pedagogical_suggestion"}}
+                  pedagogicalSuggProps={register("pedagogical_suggestion")}
                 ></PlanTaskFormRight>
               </Paper>
             </Box>

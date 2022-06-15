@@ -33,9 +33,9 @@ const useProduct = () => {
 
     }
 
-    const getProductListData = (page = 1, searchParam = ""): Promise<Product[]> => {
-        return api.get<any>(GET_PRODUCT_LIST, {page}).then((resp) => {
-            return resp.getFirstData();
+    const getProductListData = (searchParam = ""): Promise<Product[]> => {
+        return api.get<any>(GET_PRODUCT_LIST, {search_text: searchParam}).then((resp) => {
+            return resp.getFirstData().data;
         });
     }
 
@@ -67,7 +67,7 @@ const useProduct = () => {
     }
 
 
-    return {getProductList, postProduct, showProduct, updateProduct};
+    return {getProductList, postProduct, showProduct, updateProduct, getProductListData};
 
 }
 

@@ -2,12 +2,15 @@ import { FormControl, InputLabel, Input } from "@mui/material";
 import RichText from "components/shared/RichText";
 import { FormControlProps } from "components/shared/types/FormControlProps";
 import { Fragment } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
+
+
 
 export type PlanTaskFormCenterProps = {
-  titleProps: FormControlProps;
-  descriptionProps: FormControlProps;
+  titleProps: UseFormRegisterReturn;
+  descriptionProps: UseFormRegisterReturn;
   contentProps: FormControlProps;
-  pedagogicalSuggProps: FormControlProps;
+  pedagogicalSuggProps: UseFormRegisterReturn;
 };
 
 const PlanTaskFormRight = ({
@@ -27,6 +30,7 @@ const PlanTaskFormRight = ({
         <Input
           type="text"
           multiline
+          name="description"
           rows={4}
           {...descriptionProps}
         ></Input>
@@ -36,6 +40,7 @@ const PlanTaskFormRight = ({
         <Input
           type="text"
           multiline
+          name="pedagogical_sugg"
           rows={4}
           {...pedagogicalSuggProps}
         ></Input>

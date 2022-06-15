@@ -26,6 +26,12 @@ const useAbilityTask = () => {
 
     }
 
+    const getTaskListData = (searchParam = ""): Promise<Task[]> => {
+        return api.get<any>(GET_PURPOSE_LIST, {search_text: searchParam}).then((resp) => {
+            return resp.getFirstData().data;
+        });
+    }
+
     const postTask = (body: any):  Promise<any> => {
 
         return api.post<void>(POST_PURPOSE, body).then((resp) => {
@@ -54,7 +60,7 @@ const useAbilityTask = () => {
         });
     }
 
-    return {getTaskList, postTask, showTask, updateTask};
+    return {getTaskList, postTask, showTask, updateTask, getTaskListData};
 
 }
 
