@@ -5,6 +5,11 @@ export interface Role {
     label: string
 }
 
+export interface Scope {
+    id: string,
+    title: string
+}
+
 
 const GET_ROLE_LIST = '/api/common/roles';
 
@@ -17,7 +22,18 @@ const useCommon = () => {
         });
     }
 
-    return {getRoleData}
+    const getScopes = (searchTerm = "") : Promise<Scope[]> => {
+      
+        return new Promise((resolve, reject) => {
+            resolve([{id: "global", title: "global"},
+            {id: "insitution", title: "insitution"},
+            {id: "user", title: "user"},
+            {id: "group", title: "group"}])
+        });
+       
+    }
+
+    return {getRoleData, getScopes}
 }
 
 export default useCommon;

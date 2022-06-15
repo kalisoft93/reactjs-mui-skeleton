@@ -125,7 +125,7 @@ const CRUDProductDialog = ({ callback, defaults, open, ...rest }: Props) => {
                 control={control}
                 required={true}
                 controlName="banner"
-                placeholder="Banner"
+                placeholder="Banner "
                 title="Banner választó"
                 singleSelect={true}
               ></CommonSelector>
