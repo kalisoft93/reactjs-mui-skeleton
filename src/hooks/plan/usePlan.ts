@@ -6,6 +6,7 @@ export interface PlanTask {
     description: string;
     content: string;
     pedagogical_suggestion: string;
+    scope: string;
     plan_categories: number[];
     ability_categories: number[];
     ability_tasks: number[];
@@ -18,10 +19,10 @@ export interface PlanTask {
 }
 
 const GET_PLAN_CATEGORIES = 'api/plan/categories';
-const GET_PURPOSE_LIST = '/api/plan/task/filter';
-const POST_PURPOSE = '/api/plan/task/create';
-const SHOW_PURPOSE = '/api/plan/task/show';
-const UPDATE_PURPOSE = '/api/plan/task/update';
+const GET_PLAN_TASK_LIST = '/api/plan/task/filter';
+const POST_PLAN_TASK = '/api/plan/task/create';
+const SHOW_PLAN_TASK = '/api/plan/task/show';
+const UPDATE_PLAN_TASK = '/api/plan/task/update';
 
 const usePlan = () => {
 
@@ -43,7 +44,7 @@ const usePlan = () => {
     const getPlanTaskList = (page = 1, searchTerm = null): Promise<any> => {
       
         const params = {page, search_text: searchTerm};
-        return api.get<any>(GET_PURPOSE_LIST, params).then((resp) => {
+        return api.get<any>(GET_PLAN_TASK_LIST, params).then((resp) => {
             return resp.getFirstData();
         });
 
@@ -51,14 +52,14 @@ const usePlan = () => {
 
     const postPlanTask = (body: any):  Promise<any> => {
 
-        return api.post<void>(POST_PURPOSE, body).then((resp) => {
+        return api.post<void>(POST_PLAN_TASK, body).then((resp) => {
             return resp.getFirstData();
         });
     }
 
     const showPlanTask = (id): Promise<PlanTask> => {
       
-        return api.get<any>(SHOW_PURPOSE + '/' + id).then((resp) => {
+        return api.get<any>(SHOW_PLAN_TASK + '/' + id).then((resp) => {
             const rawData = resp.getFirstData();
             const planTask = rawData as PlanTask;
             planTask.ability_categories = rawData.ability_categories.map((ac) => ac.id.toString());
@@ -77,7 +78,7 @@ const usePlan = () => {
 
     const updatePlanTask = (id, body: any):  Promise<any> => {
 
-        return api.post<void>(UPDATE_PURPOSE + '/' + id, body).then((resp) => {
+        return api.post<void>(UPDATE_PLAN_TASK + '/' + id, body).then((resp) => {
             return resp.getFirstData();
         });
     }

@@ -17,6 +17,8 @@ import ProductList from 'pages/product/ProductList';
 import Ability from 'pages/ability/Ability';
 import useAuth from 'hooks/authentication/useAuth';
 import { useEffect } from 'react';
+import { Games } from '@mui/icons-material';
+import GameList from 'pages/ability/game/GameList';
 
 
 function App() {
@@ -31,6 +33,7 @@ function App() {
           <Route path='/media' element={<AppLayout title='Média'><MediaList></MediaList></AppLayout>}></Route>
           <Route path='/product' element={<AppLayout title='Termék'><ProductList></ProductList></AppLayout>}></Route>
           <Route path='/ability' element={<AppLayout title='Tematikus tevékenység'><Ability></Ability></AppLayout>}></Route>
+          <Route path='/games' element={<AppLayout title='Fejlesztő játékok'><GameList></GameList></AppLayout>}></Route>
       </Route>
       <Route path='/login' element={<AuthLayout><Login></Login></AuthLayout>}></Route>
     </Routes>

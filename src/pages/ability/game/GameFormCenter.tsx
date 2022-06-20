@@ -2,7 +2,6 @@ import CommonSelector from "components/shared/CommonSelector";
 import TagSelector from "components/shared/TagSelector";
 import { FormControlProps } from "components/shared/types/FormControlProps";
 import useAbilityTask from "hooks/ability/useAbilityTask";
-import useLevels from "hooks/levels/useLevels";
 import useMedia from "hooks/media/useMedia";
 import useProduct from "hooks/products/useProduct";
 import { Fragment } from "react";
@@ -12,22 +11,19 @@ export type PlanTaskFormCenterProps = {
   tagsProps: FormControlProps;
   mediaProps: FormControlProps;
   bannerProps: FormControlProps;
-  levelsProps: FormControlProps;
   productProps: FormControlProps;
   aTaskProps: FormControlProps;
 };
 
-const PlanTaskFormCenter = ({
+const GameFormCenter = ({
   tagsProps,
   mediaProps,
   bannerProps,
-  levelsProps,
   productProps,
   aTaskProps
 }: PlanTaskFormCenterProps) => {
 
   const { getMediaListData } = useMedia();
-  const { getLevels } = useLevels();
   const { getProductListData} = useProduct();
   const { getTaskListData } = useAbilityTask();
 
@@ -54,16 +50,6 @@ const PlanTaskFormCenter = ({
       ></CommonSelector>
 
       <CommonSelector
-        fetcher={getLevels}
-        mapper={(rawData) => rawData}
-        {...levelsProps}
-        required={true}
-        placeholder="Szint"
-        title="Szint választó"
-        singleSelect={true}
-      ></CommonSelector>
-
-      <CommonSelector
         {...productProps}
         fetcher={getProductListData}
         mapper={selectorFilterMap}
@@ -86,4 +72,4 @@ const PlanTaskFormCenter = ({
   );
 };
 
-export default PlanTaskFormCenter;
+export default GameFormCenter;

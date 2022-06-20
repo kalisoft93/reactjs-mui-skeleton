@@ -13,11 +13,11 @@ import {
   TablePagination,
 } from "@mui/material";
 import FlexBox from "components/shared/FlexBox";
-import useAbilityPurpose from "hooks/ability/useAbilityPurpose";
-import React, { useState, useEffect, useMemo } from "react";
+import useAbilityGames from "hooks/ability/useAbilityGames";
+import CRUDPlanTaskDialog from "pages/plan/CRUDPlanDIalog";
+import React, { useEffect, useMemo, useState } from "react";
 import debounce from "lodash.debounce";
-import usePlan from "hooks/plan/usePlan";
-import CRUDPlanTaskDialog from "./CRUDPlanDIalog";
+import CRUDGameDialog from "./CRUDGameDialog";
 
 interface Column {
   id: "id" | "title" | "description" | "created_at";
@@ -35,7 +35,7 @@ const columns: readonly Column[] = [
   { id: "created_at", label: "date" },
 ];
 
-const PlanTaskList = () => {
+const GameList = () => {
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -45,10 +45,10 @@ const PlanTaskList = () => {
 
   const [defaultData, setDefaultData] = useState<any>();
 
-  const { getPlanTaskList, showPlanTask } = usePlan();
+  const { getGameList, showGame } = useAbilityGames();
 
   const init = (page = 1, searchTerm = null) => {
-    getPlanTaskList(page, searchTerm).then((tagData) => {
+    getGameList(page, searchTerm).then((tagData) => {
       setRowsPerPage(tagData.per_page);
       setRows(tagData.data);
     });
@@ -87,7 +87,7 @@ const PlanTaskList = () => {
   };
 
   const editPlanTaskHandle = (id) => {
-    showPlanTask(id).then((data) => {
+    showGame(id).then((data) => {
       setDefaultData(data);
       setOpenUpdate(true);
     });
@@ -104,23 +104,23 @@ const PlanTaskList = () => {
   return (
     <Box>
       {open && (
-        <CRUDPlanTaskDialog
+        <CRUDGameDialog
           maxWidth="xl"
           open={open}
-          title={"Tevékenység hozzaadás"}
+          title={"Játék hozzaadás"}
           saveBtnLabel={"Hozzaadás"}
           callback={(status) => closeDialogHandle(status)}
-        ></CRUDPlanTaskDialog>
+        ></CRUDGameDialog>
       )}
       {openUpdate && (
-        <CRUDPlanTaskDialog
+        <CRUDGameDialog
           maxWidth="xl"
           open={openUpdate}
-          title={"Tevékenység szerkesztése"}
+          title={"Játék szerkesztése"}
           saveBtnLabel={"Mentés"}
           defaults={defaultData}
           callback={(status) => closeUpdateDialogHandle(status)}
-        ></CRUDPlanTaskDialog>
+        ></CRUDGameDialog>
       )}
       <FlexBox
         justifyContent="space-between"
@@ -203,4 +203,4 @@ const PlanTaskList = () => {
   );
 };
 
-export default PlanTaskList;
+export default GameList;

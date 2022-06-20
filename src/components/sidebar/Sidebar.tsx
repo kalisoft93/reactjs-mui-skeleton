@@ -32,7 +32,7 @@ const SideBar = () => {
     { label: "Média", icon: "LocalOffer", link: '/media' },
     { label: "Termék", icon: "LocalOffer", link: '/product' },
     { label: "Tematikus tev.", icon: "LocalOffer", link: '/ability' },
-    { label: "Fejlesztő játekok", icon: "LocalOffer", link: '/game' }
+    { label: "Fejlesztő játékok", icon: "LocalOffer", link: '/games' }
   ];
 
   const [active, setActive] = useState(false);
