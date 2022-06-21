@@ -181,7 +181,7 @@ const PlanTaskList = () => {
                     })}
 
                     <TableCell key={"action"}>
-                      <FlexBox columnGap="10px">
+                      <FlexBox sx={{cursor: "pointer"}} columnGap="10px">
                         <Edit onClick={() => editPlanTaskHandle(row.id)}></Edit>
                       </FlexBox>
                     </TableCell>

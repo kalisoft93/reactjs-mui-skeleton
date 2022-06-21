@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import FlexBox from "components/shared/FlexBox";
 import useAbilityGames from "hooks/ability/useAbilityGames";
-import CRUDPlanTaskDialog from "pages/plan/CRUDPlanDIalog";
 import React, { useEffect, useMemo, useState } from "react";
 import debounce from "lodash.debounce";
 import CRUDGameDialog from "./CRUDGameDialog";
@@ -181,7 +180,7 @@ const GameList = () => {
                     })}
 
                     <TableCell key={"action"}>
-                      <FlexBox columnGap="10px">
+                      <FlexBox sx={{cursor: "pointer"}} columnGap="10px">
                         <Edit onClick={() => editPlanTaskHandle(row.id)}></Edit>
                       </FlexBox>
                     </TableCell>

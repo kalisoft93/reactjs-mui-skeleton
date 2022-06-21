@@ -1,17 +1,14 @@
 import {
   Dialog,
   DialogContent,
-  DialogProps,
-  DialogTitle,
   FormControl,
   Paper,
   Input,
   InputLabel,
-  Typography,
-  styled,
   Button,
   DialogActions,
   Box,
+  DialogTitle,
 } from "@mui/material";
 import FlexBox from "components/shared/FlexBox";
 import CommonSelector from "components/shared/CommonSelector";
@@ -48,7 +45,6 @@ const CRUDProductDialog = ({ callback, defaults, open, ...rest }: Props) => {
     register,
     handleSubmit,
     control,
-    watch,
     formState: { errors },
   } = useForm<ProductDialogInputs>({
     defaultValues: defaults || { tags: [], media: [] },

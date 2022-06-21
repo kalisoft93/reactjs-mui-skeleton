@@ -82,7 +82,11 @@ const FHSelect = (props: SearchSelectProps) => {
             renderValue={(selected: any) => (
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                 {(props.options.length > 0 && selected ? Array.isArray(selected) ? selected : [selected] :  []).map((value) => {
-                  const label = props.options.find((o) => o.id === value).title;
+                  const item = props.options.find((o) => o.id == value);
+                  if (!item){
+                    console.log(props.options);
+                  }
+                  const label = item.title;
                   return (
                   <Chip key={value} label={label} />
                   );

@@ -1,11 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import {
-  BrowserRouter,
- Navigate,
  Route,
  Routes,
- useNavigate,
 } from "react-router-dom";
 import Login from './pages/login/Login';
 import AuthLayout from './components/layouts/AuthLayout';
@@ -16,8 +12,6 @@ import MediaList from './pages/media/MediaList';
 import ProductList from 'pages/product/ProductList';
 import Ability from 'pages/ability/Ability';
 import useAuth from 'hooks/authentication/useAuth';
-import { useEffect } from 'react';
-import { Games } from '@mui/icons-material';
 import GameList from 'pages/ability/game/GameList';
 
 

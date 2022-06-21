@@ -50,7 +50,6 @@ const CRUDGameDialog = ({
     register,
     handleSubmit,
     control,
-    watch,
     formState: { errors },
   } = useForm<GameDialogInputs>({
     defaultValues: defaults || {

@@ -50,9 +50,9 @@ const useAbilityGames = () => {
             planTask.plan_categories = rawData.plan_categories.map((pc) => pc.id.toString());
             planTask.ability_tasks = rawData.ability_tasks.map((at) => at.id.toString());
             planTask.products = rawData.products.map((p) => p.id.toString());
+            planTask.banner = rawData.banner && rawData.banner.length > 0 ? rawData.banner[0].id : null;
             planTask.tags = rawData.tags.map((t) => t.id);
             planTask.media = rawData.media.map((m) => m.id);
-            planTask.banner = rawData.media.map((b) => b.id);
             planTask.roles = rawData.roles.map((r) => r.id);
             planTask.levels = rawData.levels.map((l) => l.id);
             return planTask;

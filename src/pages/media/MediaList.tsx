@@ -129,7 +129,7 @@ const MediaList = () => {
                         </TableCell>
                       );
                     })}
-                    <TableCell key={"action"}>
+                    <TableCell sx={{cursor: "pointer"}}  key={"action"}>
                       <Delete onClick={() => deleteMediaHandle(row.id)}></Delete>
                     </TableCell>
                   </TableRow>

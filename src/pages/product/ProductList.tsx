@@ -149,7 +149,7 @@ const ProductList = () => {
                     })}
 
                     <TableCell key={"action"}>
-                      <FlexBox  columnGap="10px">
+                      <FlexBox  sx={{cursor: "pointer"}} columnGap="10px">
                         <Edit onClick={() => editMediaHandle(row.id)}></Edit>
                         <Delete
                           onClick={() => deleteMediaHandle(row.id)}

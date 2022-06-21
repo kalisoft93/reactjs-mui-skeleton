@@ -1,6 +1,7 @@
 import {
   Box,
   Divider,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -15,11 +16,13 @@ import CSidebarProfile from "./CSidebarProfile";
 import MaterialIcon from "../../shared/MaterialIcon";
 import { SidebarProps } from "../Sidebar";
 import { useNavigate } from "react-router-dom";
+import { Logout } from "@mui/icons-material";
+import useAuth from "hooks/authentication/useAuth";
 
 const MobileSidebarWrapper = styled(Box)({
   display: "flex",
   flexDirection: "column",
-  padding: "15px"
+  padding: "15px",
 });
 
 const SBListItem = styled(ListItem)({
@@ -31,12 +34,17 @@ const SBListItemBtn = styled(ListItemButton)({
 });
 
 const CollapsedSidebar = (props: SidebarProps) => {
-
   const navigation = useNavigate();
+
+  const auth = useAuth();
+
+  const logout = () => {
+    auth.logout();
+  };
 
   const navigate = (link) => {
     navigation(link);
-  }
+  };
 
   return (
     <MobileSidebarWrapper>
@@ -47,7 +55,7 @@ const CollapsedSidebar = (props: SidebarProps) => {
       <List sx={{ p: "0px" }}>
         {props.list.map((item, key) => {
           return (
-            <SBListItem key={key} onClick={() => navigate(item.link)} >
+            <SBListItem key={key} onClick={() => navigate(item.link)}>
               <SBListItemBtn>
                 <ListItemIcon>
                   <MaterialIcon icon={item.icon}></MaterialIcon>
@@ -58,6 +66,9 @@ const CollapsedSidebar = (props: SidebarProps) => {
           );
         })}
       </List>
+      <IconButton>
+        <Logout onClick={logout}></Logout>
+      </IconButton>
     </MobileSidebarWrapper>
   );
 };

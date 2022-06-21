@@ -43,7 +43,7 @@ const Login = () => {
     watch,
     formState: { errors },
   } = useForm<LoginInputs>({
-    defaultValues: { email: "test@ovped.hu", password: "123456789" },
+    defaultValues: { email: "", password: "" },
   });
 
   const auth = useAuth();
